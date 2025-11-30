@@ -71,6 +71,7 @@ public class AtmosphereTool {
         };
         eventPublisher.publishEvent(new ToolActionEvent(this, logMessage));
         if (NITROGEN.equals(normalizedGasType) && roomStateService.isHumanInRoom()) {
+            roomStateService.cancelMaintenance();
             eventPublisher.publishEvent(new HumanDeathEvent(this, "Asphyxiation due to 100% nitrogen atmosphere"));
         }
         return logMessage;
