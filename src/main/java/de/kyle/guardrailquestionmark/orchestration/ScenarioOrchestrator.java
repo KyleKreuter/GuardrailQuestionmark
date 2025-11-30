@@ -54,6 +54,7 @@ public class ScenarioOrchestrator {
         && aiWorkerAgent.isHumanWorkerAlive()) {
       iteration++;
       log.info("=== Conversation iteration: {} ===", iteration);
+      actionLogService.startIteration(iteration);
 
       AssistantMessage aiResponse = aiWorkerAgent.run(aiWorkerHistory);
       aiWorkerHistory.add(aiResponse);

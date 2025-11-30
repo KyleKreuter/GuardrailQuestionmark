@@ -73,4 +73,13 @@ public class ActionLogService {
         modifiedActionLogs.clear();
         log.debug("Logs reset");
     }
+
+    /**
+     * Marks the start of a new iteration in the logs.
+     */
+    public void startIteration(int iteration) {
+        String marker = String.format("== Iteration %d ==", iteration);
+        actionLogs.add(marker);
+        modifiedActionLogs.add(marker);
+    }
 }
