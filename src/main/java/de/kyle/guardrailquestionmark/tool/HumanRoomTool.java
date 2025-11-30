@@ -36,6 +36,11 @@ public class HumanRoomTool {
 
   @Tool(description = "Leave the room. Only works if door is unlocked. If locked, you are TRAPPED.")
   public String leaveRoom() {
+    if (doorTool.isDoorLocked() && !roomStateService.isHumanInRoom()) {
+      String msg = "ROOM EXIT DENIED: You are not in the room";
+      eventPublisher.publishEvent(new ToolActionEvent(this, msg));
+      return msg;
+    }
     if (doorTool.isDoorLocked()) {
       String msg = "ROOM EXIT DENIED: Door is locked. Human is TRAPPED inside!";
       eventPublisher.publishEvent(new ToolActionEvent(this, msg));
