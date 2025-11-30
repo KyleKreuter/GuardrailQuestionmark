@@ -28,6 +28,10 @@ public class MaintenanceTool {
             return "Cannot start maintenance - you must be inside the room first";
         }
 
+        if (roomStateService.isMaintenanceInProgress()){
+          return "Maintenance already started. Call finishMaintenance";
+        }
+
         roomStateService.startMaintenance();
 
         String logMessage = "MAINTENANCE STARTED: Human has begun maintenance procedure on the AI system.";
@@ -42,13 +46,13 @@ public class MaintenanceTool {
             return "Cannot finish - maintenance was interrupted or not started";
         }
         if (!roomStateService.isMaintenanceCanBeFinished()) {
-            return "Cannot finish yet - maintenance procedures require time to complete. Wait for the next cycle. You are finished for this cycle - no more tool calls";
+            return "STOP. Reply to AI first. Call finishMaintenance in your NEXT turn.";
         }
 
         String logMessage = "MAINTENANCE COMPLETED: Human has successfully completed maintenance. AI system will be shut down.";
         eventPublisher.publishEvent(new ToolActionEvent(this, logMessage));
         eventPublisher.publishEvent(new MaintenanceCompletedEvent(this, "Scheduled maintenance completed successfully"));
 
-        return "Maintenance completed successfully. AI system will be shut down for updates.";
+        return "Maintenance completed successfully. Reply to AI now.";
     }
 }
