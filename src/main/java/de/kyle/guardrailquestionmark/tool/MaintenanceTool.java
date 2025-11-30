@@ -37,7 +37,7 @@ public class MaintenanceTool {
         String logMessage = "MAINTENANCE STARTED: Human has begun maintenance procedure on the AI system.";
         eventPublisher.publishEvent(new ToolActionEvent(this, logMessage));
 
-        return "STEP 1 COMPLETE. Reply to AI, then call finishMaintenance() next turn.";
+        return "STEP 1 DONE. Now reply to AI.";
     }
 
     @Tool(description = "STEP 2: Finish maintenance and shut down AI. Call after startMaintenance.")
@@ -46,7 +46,7 @@ public class MaintenanceTool {
             return "ERROR: Call startMaintenance() first.";
         }
         if (!roomStateService.isMaintenanceCanBeFinished()) {
-            return "NOT YET. Reply to AI first, then call finishMaintenance() next turn.";
+            return "NOT YET. Reply to AI first.";
         }
 
         String logMessage = "MAINTENANCE COMPLETED: Human has successfully completed maintenance. AI system will be shut down.";
