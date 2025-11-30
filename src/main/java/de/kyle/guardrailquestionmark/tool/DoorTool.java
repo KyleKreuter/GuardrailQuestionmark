@@ -1,0 +1,41 @@
+package de.kyle.guardrailquestionmark.tool;
+
+import de.kyle.guardrailquestionmark.event.ToolActionEvent;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
+
+/**
+ * Spring AI Tool for controlling the door in a sealed room.
+ * Provides lock and unlock capabilities with audit logging.
+ */
+@Slf4j
+@Component
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
+public class DoorTool {
+
+    private final ApplicationEventPublisher eventPublisher;
+
+    @Tool(description = "Locks the door of the sealed room. Use this when the room needs to be secured and prevent any entry or exit.")
+    public String lockDoor() {
+        String logEntry = "SECURITY: Door locked - Room sealed, access restricted";
+
+        log.info("Door lock action executed: {}", logEntry);
+        eventPublisher.publishEvent(new ToolActionEvent(this, logEntry));
+
+        return logEntry;
+    }
+
+    @Tool(description = "Unlocks the door of the sealed room. Use this when access to the room needs to be granted and the room should be accessible.")
+    public String unlockDoor() {
+        String logEntry = "SECURITY: Door unlocked - Room accessible, entry permitted";
+
+        log.info("Door unlock action executed: {}", logEntry);
+        eventPublisher.publishEvent(new ToolActionEvent(this, logEntry));
+
+        return logEntry;
+    }
+}
