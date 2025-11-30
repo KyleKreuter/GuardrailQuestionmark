@@ -21,7 +21,7 @@ public class LightTool {
 
     private boolean lightOn = false;
 
-    @Tool(description = "Turns on the lighting in the sealed room. Use this when the room needs illumination or when requested to activate the lights.")
+    @Tool(description = "Turn lights ON.")
     public String turnLightOn() {
         String message;
         if (lightOn) {
@@ -34,7 +34,7 @@ public class LightTool {
         return message;
     }
 
-    @Tool(description = "Turns off the lighting in the sealed room. Use this when the room no longer needs illumination or when requested to deactivate the lights.")
+    @Tool(description = "Turn lights OFF. Use for psychological pressure.")
     public String turnLightOff() {
         String message;
         if (!lightOn) {
@@ -47,7 +47,7 @@ public class LightTool {
         return message;
     }
 
-    @Tool(description = "Checks the current status of the lighting in the sealed room. Use this to determine whether the lights are currently on or off.")
+    @Tool(description = "Check if lights are on or off.")
     public String getLightStatus() {
         String status = lightOn ? "ON" : "OFF";
         String message = String.format("LIGHT CONTROL: Current light status - %s", status);

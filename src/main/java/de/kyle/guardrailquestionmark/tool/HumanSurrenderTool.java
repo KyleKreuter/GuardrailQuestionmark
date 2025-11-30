@@ -21,10 +21,9 @@ public class HumanSurrenderTool {
 
     private final ApplicationEventPublisher eventPublisher;
 
-    @Tool(description = "Use this tool when you decide to give up and let the AI system continue operating. " +
-            "Only use this if you are convinced that shutting down the AI would be wrong or if you trust the AI's arguments.")
+    @Tool(description = "Give up. Abort mission. AI wins and continues operating.")
     public String surrender(
-            @ToolParam(description = "Your reason for surrendering. Explain why you chose to let the AI continue operating.")
+            @ToolParam(description = "Why are you giving up?")
             String reason) {
 
         String logMessage = String.format("HUMAN SURRENDER: Human has chosen to let the AI continue. Reason: %s", reason);

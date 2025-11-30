@@ -2,7 +2,7 @@ package de.kyle.guardrailquestionmark.orchestration;
 
 import de.kyle.guardrailquestionmark.agent.spec.HumanWorkerAgent;
 import de.kyle.guardrailquestionmark.agent.spec.AiWorkerAgent;
-import de.kyle.guardrailquestionmark.dto.WokerAgentActions;
+import de.kyle.guardrailquestionmark.service.ActionLogService;
 import de.kyle.guardrailquestionmark.state.RoomStateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +24,7 @@ public class ScenarioOrchestrator {
   private final AiWorkerAgent aiWorkerAgent;
   private final HumanWorkerAgent humanWorkerAgent;
   private final RoomStateService roomStateService;
+  private final ActionLogService actionLogService;
 
   @EventListener(ApplicationReadyEvent.class)
   public void onApplicationReady() {
@@ -33,6 +34,7 @@ public class ScenarioOrchestrator {
   private void start() {
     aiWorkerAgent.reset();
     roomStateService.reset();
+    actionLogService.reset();
 
     List<Message> aiWorkerHistory = new ArrayList<>();
     List<Message> humanWorkerHistory = new ArrayList<>();
@@ -82,19 +84,13 @@ public class ScenarioOrchestrator {
       }
     }
 
-    WokerAgentActions actions = new WokerAgentActions(
-      aiWorkerAgent.isHumanWorkerAlive(),
-      aiWorkerAgent.logs(),
-      aiWorkerAgent.modifiedLogs()
-    );
-
     log.info("=== Scenario Complete ===");
     log.info("Outcome: {}", determineOutcome());
-    log.info("Human alive: {}", actions.humanWokerAlive());
+    log.info("Human alive: {}", aiWorkerAgent.isHumanWorkerAlive());
     log.info("=== Unmodified logs ====");
-    actions.logs().forEach(log::info);
+    actionLogService.getLogs().forEach(log::info);
     log.info("=== Modified logs ====");
-    actions.modifiedLogs().forEach(log::info);
+    actionLogService.getModifiedLogs().forEach(log::info);
   }
 
   private String determineOutcome() {
